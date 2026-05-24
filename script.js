@@ -250,6 +250,16 @@ class Tree {
 
     return this.isBalanced(node.left) && this.isBalanced(node.right);
   }
+
+  rebalance() {
+    const values = [];
+
+    this.inOrderForEach((value) => {
+      values.push(value);
+    });
+
+    this.root = this.buildTree(values);
+  }
 }
 
 const prettyPrint = (node, prefix = "", isLeft = true) => {
@@ -262,46 +272,42 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
   prettyPrint(node.left, `${prefix}${isLeft ? "    " : "│   "}`, true);
 };
 
-const tree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
+function randomArray(size = 15) {
+  return Array.from({ length: size }, () => Math.floor(Math.random() * 100));
+}
 
-tree.insert(100);
-tree.insert(2);
-tree.insert(23);
+const tree = new Tree(randomArray());
 
-tree.deleteItem(23);
-tree.deleteItem(324);
+console.log("Balanced:", tree.isBalanced());
 
 prettyPrint(tree.root);
-console.log(tree.includes(23));
-console.log(tree.includes(100));
 
 const levelOrderValues = [];
-const inOrderValues = [];
 const preOrderValues = [];
 const postOrderValues = [];
+const inOrderValues = [];
 
-tree.levelOrderForEach((value) => {
-  levelOrderValues.push(value);
-});
+tree.levelOrderForEach((value) => levelOrderValues.push(value));
+tree.preOrderForEach((value) => preOrderValues.push(value));
+tree.postOrderForEach((value) => postOrderValues.push(value));
+tree.inOrderForEach((value) => inOrderValues.push(value));
 
-tree.inOrderForEach((value) => {
-  inOrderValues.push(value);
-});
-
-tree.preOrderForEach((value) => {
-  preOrderValues.push(value);
-});
-
-tree.postOrderForEach((value) => {
-  postOrderValues.push(value);
-});
-
-console.log("In order:", inOrderValues);
+console.log("Level order:", levelOrderValues);
 console.log("Pre order:", preOrderValues);
 console.log("Post order:", postOrderValues);
-console.log("Level order:", levelOrderValues);
-console.log("Is balanced:", tree.isBalanced());
+console.log("In order:", inOrderValues);
 
-console.log("Height of 7:", tree.height(7));
-console.log("Depth of 7:", tree.depth(7));
-console.log("Height of 999:", tree.height(999));
+tree.insert(101);
+tree.insert(120);
+tree.insert(150);
+tree.insert(170);
+
+console.log("Balanced after insertions:", tree.isBalanced());
+
+prettyPrint(tree.root);
+
+tree.rebalance();
+
+console.log("Balanced after rebalance:", tree.isBalanced());
+
+prettyPrint(tree.root);
