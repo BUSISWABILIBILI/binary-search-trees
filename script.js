@@ -134,6 +134,54 @@ class Tree {
       }
     }
   }
+
+  inOrderForEach(callback, node = this.root) {
+    if (!callback) {
+      throw new Error("Callback is required");
+    }
+
+    if (node === null) {
+      return;
+    }
+
+    this.inOrderForEach(callback, node.left);
+
+    callback(node.data);
+
+    this.inOrderForEach(callback, node.right);
+  }
+
+  preOrderForEach(callback, node = this.root) {
+    if (!callback) {
+      throw new Error("Callback is required");
+    }
+
+    if (node === null) {
+      return;
+    }
+
+    callback(node.data);
+
+    this.preOrderForEach(callback, node.left);
+
+    this.preOrderForEach(callback, node.right);
+  }
+
+  postOrderForEach(callback, node = this.root) {
+    if (!callback) {
+      throw new Error("Callback is required");
+    }
+
+    if (node === null) {
+      return;
+    }
+
+    this.postOrderForEach(callback, node.left);
+
+    this.postOrderForEach(callback, node.right);
+
+    callback(node.data);
+  }
 }
 
 const prettyPrint = (node, prefix = "", isLeft = true) => {
@@ -160,9 +208,28 @@ console.log(tree.includes(23));
 console.log(tree.includes(100));
 
 const levelOrderValues = [];
+const inOrderValues = [];
+const preOrderValues = [];
+const postOrderValues = [];
 
 tree.levelOrderForEach((value) => {
   levelOrderValues.push(value);
 });
+
+tree.inOrderForEach((value) => {
+  inOrderValues.push(value);
+});
+
+tree.preOrderForEach((value) => {
+  preOrderValues.push(value);
+});
+
+tree.postOrderForEach((value) => {
+  postOrderValues.push(value);
+});
+
+console.log("In order:", inOrderValues);
+console.log("Pre order:", preOrderValues);
+console.log("Post order:", postOrderValues);
 
 console.log("Level order:", levelOrderValues);
