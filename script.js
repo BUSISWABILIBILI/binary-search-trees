@@ -108,6 +108,32 @@ class Tree {
 
     return node;
   }
+
+  levelOrderForEach(callback) {
+    if (!callback) {
+      throw new Error("Callback is required");
+    }
+
+    if (this.root === null) {
+      return;
+    }
+
+    const queue = [this.root];
+
+    while (queue.length > 0) {
+      const currentNode = queue.shift();
+
+      callback(currentNode.data);
+
+      if (currentNode.left !== null) {
+        queue.push(currentNode.left);
+      }
+
+      if (currentNode.right !== null) {
+        queue.push(currentNode.right);
+      }
+    }
+  }
 }
 
 const prettyPrint = (node, prefix = "", isLeft = true) => {
@@ -132,3 +158,11 @@ tree.deleteItem(324);
 prettyPrint(tree.root);
 console.log(tree.includes(23));
 console.log(tree.includes(100));
+
+const levelOrderValues = [];
+
+tree.levelOrderForEach((value) => {
+  levelOrderValues.push(value);
+});
+
+console.log("Level order:", levelOrderValues);
