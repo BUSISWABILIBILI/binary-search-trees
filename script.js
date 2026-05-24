@@ -182,6 +182,59 @@ class Tree {
 
     callback(node.data);
   }
+
+  height(value) {
+    const node = this.findNode(value);
+
+    if (node === null) {
+      return undefined;
+    }
+
+    return this.getHeight(node);
+  }
+
+  getHeight(node) {
+    if (node === null) {
+      return -1;
+    }
+
+    const leftHeight = this.getHeight(node.left);
+    const rightHeight = this.getHeight(node.right);
+
+    return Math.max(leftHeight, rightHeight) + 1;
+  }
+
+  depth(value, node = this.root, currentDepth = 0) {
+    if (node === null) {
+      return undefined;
+    }
+
+    if (node.data === value) {
+      return currentDepth;
+    }
+
+    if (value < node.data) {
+      return this.depth(value, node.left, currentDepth + 1);
+    }
+
+    return this.depth(value, node.right, currentDepth + 1);
+  }
+
+  findNode(value, node = this.root) {
+    if (node === null) {
+      return null;
+    }
+
+    if (node.data === value) {
+      return node;
+    }
+
+    if (value < node.data) {
+      return this.findNode(value, node.left);
+    }
+
+    return this.findNode(value, node.right);
+  }
 }
 
 const prettyPrint = (node, prefix = "", isLeft = true) => {
@@ -231,5 +284,8 @@ tree.postOrderForEach((value) => {
 console.log("In order:", inOrderValues);
 console.log("Pre order:", preOrderValues);
 console.log("Post order:", postOrderValues);
-
 console.log("Level order:", levelOrderValues);
+
+console.log("Height of 7:", tree.height(7));
+console.log("Depth of 7:", tree.depth(7));
+console.log("Height of 999:", tree.height(999));
