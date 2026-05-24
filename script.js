@@ -26,6 +26,22 @@ class Tree {
 
     return root;
   }
+
+  includes(value, node = this.root) {
+    if (node === null) {
+      return false;
+    }
+
+    if (node.data === value) {
+      return true;
+    }
+
+    if (value < node.data) {
+      return this.includes(value, node.left);
+    }
+
+    return this.includes(value, node.right);
+  }
 }
 
 const prettyPrint = (node, prefix = "", isLeft = true) => {
@@ -41,3 +57,5 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
 const tree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
 
 prettyPrint(tree.root);
+console.log(tree.includes(23));
+console.log(tree.includes(100));
