@@ -235,6 +235,21 @@ class Tree {
 
     return this.findNode(value, node.right);
   }
+
+  isBalanced(node = this.root) {
+    if (node === null) {
+      return true;
+    }
+
+    const leftHeight = this.getHeight(node.left);
+    const rightHeight = this.getHeight(node.right);
+
+    if (Math.abs(leftHeight - rightHeight) > 1) {
+      return false;
+    }
+
+    return this.isBalanced(node.left) && this.isBalanced(node.right);
+  }
 }
 
 const prettyPrint = (node, prefix = "", isLeft = true) => {
@@ -285,6 +300,7 @@ console.log("In order:", inOrderValues);
 console.log("Pre order:", preOrderValues);
 console.log("Post order:", postOrderValues);
 console.log("Level order:", levelOrderValues);
+console.log("Is balanced:", tree.isBalanced());
 
 console.log("Height of 7:", tree.height(7));
 console.log("Depth of 7:", tree.depth(7));
