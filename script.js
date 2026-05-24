@@ -69,6 +69,45 @@ class Tree {
       this.insert(value, node.right);
     }
   }
+
+  deleteItem(value, node = this.root) {
+    if (node === null) {
+      return null;
+    }
+
+    if (value < node.data) {
+      node.left = this.deleteItem(value, node.left);
+    } else if (value > node.data) {
+      node.right = this.deleteItem(value, node.right);
+    } else {
+      // No children
+      if (node.left === null && node.right === null) {
+        return null;
+      }
+
+      // One child
+      if (node.left === null) {
+        return node.right;
+      }
+
+      if (node.right === null) {
+        return node.left;
+      }
+
+      // Two children
+      let successor = node.right;
+
+      while (successor.left !== null) {
+        successor = successor.left;
+      }
+
+      node.data = successor.data;
+
+      node.right = this.deleteItem(successor.data, node.right);
+    }
+
+    return node;
+  }
 }
 
 const prettyPrint = (node, prefix = "", isLeft = true) => {
@@ -86,6 +125,9 @@ const tree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
 tree.insert(100);
 tree.insert(2);
 tree.insert(23);
+
+tree.deleteItem(23);
+tree.deleteItem(324);
 
 prettyPrint(tree.root);
 console.log(tree.includes(23));
